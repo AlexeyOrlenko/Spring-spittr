@@ -49,7 +49,7 @@ public class RootConfig {
 
             @Override
             public Spitter findByUsername(String username) {
-                return new Spitter(username, null, null, null);
+                return new Spitter(username, null, null, null, null);
             }
         };
     }
