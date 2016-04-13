@@ -40,6 +40,7 @@ public class SpitterControllerTest {
                 .param("lastName", "Bauer")
                 .param("username", "jbauer")
                 .param("password", "24hours")
+                .param("email", "jbauer@rock.com")
         ).andExpect(MockMvcResultMatchers.redirectedUrl("/spitter/jbauer"));
 
         Mockito.verify(mockRepository, Mockito.atLeastOnce()).save(unsaved);
