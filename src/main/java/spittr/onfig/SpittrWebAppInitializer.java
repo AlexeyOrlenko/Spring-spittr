@@ -25,7 +25,7 @@ public class SpittrWebAppInitializer extends AbstractAnnotationConfigDispatcherS
 
     @Override
     protected void customizeRegistration(ServletRegistration.Dynamic registration) {
-        registration.setMultipartConfig(new MultipartConfigElement("/tmp/spittr/uploads"));
+        registration.setMultipartConfig(new MultipartConfigElement("/", 10485760, 4*10485760, 0));
     }
 
     @Override
