@@ -4,22 +4,34 @@
     </head>
     <body>
         <div layout:fragment="content">
-            <h1>Recent Spittles</h1>
+            <div class="spittleForm">
+                <h1>Spit it out...</h1>
+                <form method="POST" th:object="${spittleForm}">
+                    <input type="hidden" name="latitude"/>
+                    <input type="hidden" name="longitude"/>
+                    <textarea name="message" cols="80" rows="5"></textarea><br/>
+                    <input type="submit" value="Add" />
+                </form>
+            </div>
 
-            <ul>
-                <li th:each="spittle : ${spittleList}" th:text="${spittle}">
-                    <div class="spittleMessage">
-                        <label th:value="${spittle.message}" />
-                    </div>
-                    <div>
-                        <span class="spittleTime"><label th:value="${spittle.time}" /></span>
-                        <span class="spittleLocation">
-                            (<label th:value="${spittle.latitude}" />,
-                            <label th:value="${spittle.longitude}" />)</span>
-                    </div>
-                </li>
+            <div class="listTitle">
+                <h1>Recent Spittles</h1>
 
-            </ul>
+                <ul>
+                    <li th:each="spittle : ${spittleList}" th:text="${spittle}">
+                        <div class="spittleMessage">
+                            <label th:value="${spittle.message}" />
+                        </div>
+                        <div>
+                            <span class="spittleTime"><label th:value="${spittle.time}" /></span>
+                            <span class="spittleLocation">
+                                (<label th:value="${spittle.latitude}" />,
+                                <label th:value="${spittle.longitude}" />)</span>
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
         </div>
     </body>
 </html>

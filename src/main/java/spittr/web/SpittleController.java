@@ -1,5 +1,6 @@
 package spittr.web;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,8 +47,18 @@ public class SpittleController {
 
     @RequestMapping(value="/{spittleId}", method = RequestMethod.GET)
     public String spittle(Model model, @PathVariable long spittleId) {
-        model.addAttribute("spittle", spittleRepository.findOne(spittleId));
+        
+        Spittle spittle = spittleRepository.findOne(spittleId);
+        if(spittle == null) throw new SpittleNotFoundException();
+        
+        model.addAttribute("spittle", spittle);
         return "spittle";
+    }
+    
+    @RequestMapping(method = RequestMethod.POST)
+    public String saveSpittle(SpittleForm form, Model model){
+        spittleRepository.save(new Spittle(form.getMessage(), new Date(), form.getLongitude(), form.getLatitude()));
+        return "redirect:/spittles";
     }
 
 }

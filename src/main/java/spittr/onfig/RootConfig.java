@@ -16,6 +16,7 @@ import spittr.Spitter;
 import spittr.Spittle;
 import spittr.data.SpitterRepository;
 import spittr.data.SpittleRepository;
+import spittr.web.DuplicateSpittleException;
 
 /** @author yvkuzmen */
 @Configuration
@@ -38,6 +39,12 @@ public class RootConfig {
             public Spittle findOne(long id) {
                 return new Spittle("Hello " + id, new Date());
             }
+
+            @Override
+            public void save(Spittle spittle) {
+                throw new DuplicateSpittleException();
+            }
+            
         };
     }
     
