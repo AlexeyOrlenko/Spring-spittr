@@ -1,5 +1,7 @@
 package spittr.web;
 
+import java.io.File;
+import java.io.IOException;
 import javax.servlet.http.Part;
 import javax.validation.Valid;
 import org.slf4j.Logger;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
 import spittr.Spitter;
 import spittr.data.SpitterRepository;
 
@@ -38,11 +41,13 @@ public class SpitterController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String processRegistration(@RequestPart("profilePicture") Part profilePicture, 
+    public String processRegistration(@RequestPart("profilePicture") MultipartFile profilePicture, 
                                       @Valid Spitter spitter, 
-                                      Errors errors) {
+                                      Errors errors) throws IOException {
 
-        log.info("profilePicture: \n{}\n{}", profilePicture.getSubmittedFileName(), profilePicture.getSize());
+        log.info("profilePicture: \n{}\n{}", profilePicture.getOriginalFilename(), profilePicture.getSize());
+        profilePicture.transferTo(new File(profilePicture.getOriginalFilename()));
+        
         if (errors.hasErrors()) {
             return "registerForm";
         } else {

@@ -2,6 +2,7 @@ package spittr.web;
 
 import org.junit.Test;
 import org.mockito.Mockito;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -26,6 +27,7 @@ public class SpitterControllerTest {
     @Test
     public void shouldProcessRegistration() throws Exception {
         SpitterRepository mockRepository = Mockito.mock(SpitterRepository.class);
+        MockMultipartFile profilePicture = new MockMultipartFile("profilePicture", "pic.jpg", "image/jpeg", "nonsensecontent".getBytes());
 
         Spitter unsaved = new Spitter("jbauer", "24hours", "Jack", "Bauer", "jbauer@rock.com");
         Spitter saved = new Spitter(24L, "jbauer", "24hours", "Jack", "Bauer", "jbauer@rock.com");
@@ -35,7 +37,7 @@ public class SpitterControllerTest {
 
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/spitter/register")
+                MockMvcRequestBuilders.fileUpload("/spitter/register").file(profilePicture)
                 .param("firstName", "Jack")
                 .param("lastName", "Bauer")
                 .param("username", "jbauer")
