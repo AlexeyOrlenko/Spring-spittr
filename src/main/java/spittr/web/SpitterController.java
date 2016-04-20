@@ -36,13 +36,13 @@ public class SpitterController {
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String showRegistrationForm(Model model) {
-        model.addAttribute("spitter", new Spitter());
+        model.addAttribute("registerForm", new RegisterForm());
         return "registerForm";
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String processRegistration(@RequestPart("profilePicture") MultipartFile profilePicture, 
-                                      @Valid Spitter spitter, 
+                                      @Valid RegisterForm form, 
                                       Errors errors) throws IOException {
 
         log.info("profilePicture: \n{}\n{}", profilePicture.getOriginalFilename(), profilePicture.getSize());
@@ -51,8 +51,8 @@ public class SpitterController {
         if (errors.hasErrors()) {
             return "registerForm";
         } else {
-            spitterRepository.save(spitter);
-            return "redirect:/spitter/" + spitter.getUsername();
+            spitterRepository.save(form.toSpitter());
+            return "redirect:/spitter/" + form.getUsername();
         }
     }
 

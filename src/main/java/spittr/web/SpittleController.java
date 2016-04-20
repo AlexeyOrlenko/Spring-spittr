@@ -3,9 +3,11 @@ package spittr.web;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -41,6 +43,7 @@ public class SpittleController {
             @RequestParam(value = "max", defaultValue = MAX_LONG_AS_STRING) long max,
             @RequestParam(value = "count", defaultValue = "20") int count) {
 
+        model.addAttribute("spittleForm", new SpittleForm());
         model.addAttribute("spittleList", spittleRepository.findSpittles(max, count));
         return "spittles";
     }
@@ -56,7 +59,12 @@ public class SpittleController {
     }
     
     @RequestMapping(method = RequestMethod.POST)
-    public String saveSpittle(SpittleForm form, Model model){
+    public String saveSpittle(@Valid SpittleForm form, Model model, Errors errors){
+        
+        if(errors.hasErrors()){
+            return "spittles";
+        }
+        
         spittleRepository.save(new Spittle(form.getMessage(), new Date(), form.getLongitude(), form.getLatitude()));
         return "redirect:/spittles";
     }

@@ -7,9 +7,16 @@
             <div class="spittleForm">
                 <h1>Spit it out...</h1>
                 <form method="POST" th:object="${spittleForm}">
-                    <input type="hidden" name="latitude"/>
-                    <input type="hidden" name="longitude"/>
-                    <textarea name="message" cols="80" rows="5"></textarea><br/>
+                    <div class="errors" th:if="${#fields.hasErrors('*')}">
+                        <ul>
+                            <li th:each="err : ${#fields.errors('*')}" th:text="${err}">Input is incorrect</li>
+                        </ul>
+                    </div>
+                    
+                    <input type="hidden" th:field="*{latitude}"/>
+                    <input type="hidden" th:field="*{longitude}"/>
+                    <label th:class="${#fields.hasErrors('message')}? 'error'" for="ta1">Message</label><br/>
+                    <textarea id="ta1" th:field="*{message}" th:class="${#fields.hasErrors('message')}? 'error'" cols="80" rows="5"></textarea><br/>
                     <input type="submit" value="Add" />
                 </form>
             </div>

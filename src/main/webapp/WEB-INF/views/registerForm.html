@@ -6,7 +6,7 @@
     <body>
         <div layout:fragment="content">
             <h1>Register</h1>
-            <form method="POST" th:object="${spitter}" enctype="multipart/form-data">
+            <form method="POST" th:object="${registerForm}" enctype="multipart/form-data">
                 <div class="errors" th:if="${#fields.hasErrors('*')}">
                     <ul>
                         <li th:each="err : ${#fields.errors('*')}" th:text="${err}">Input is incorrect</li>
