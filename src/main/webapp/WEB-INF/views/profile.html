@@ -6,9 +6,9 @@
     <body>
         <div layout:fragment="content">
             <h1>Your Profile</h1>
-            <c:out value="${spitter.username}" /><br/>
-            <c:out value="${spitter.firstName}" />
-            <c:out value="${spitter.lastName}" />
+            <label th:text="${spitter.username}" /><br/>
+            <label th:text="${spitter.firstName}" /><br/>
+            <label th:text="${spitter.lastName}" /><br/>
         </div>
     </body>
 </html>

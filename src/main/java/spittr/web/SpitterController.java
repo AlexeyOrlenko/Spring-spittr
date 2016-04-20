@@ -2,7 +2,6 @@ package spittr.web;
 
 import java.io.File;
 import java.io.IOException;
-import javax.servlet.http.Part;
 import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import spittr.Spitter;
 import spittr.data.SpitterRepository;
 
@@ -43,23 +43,32 @@ public class SpitterController {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String processRegistration(@RequestPart("profilePicture") MultipartFile profilePicture, 
                                       @Valid RegisterForm form, 
-                                      Errors errors) throws IOException {
+                                      Errors errors,
+                                      RedirectAttributes model) throws IOException {
 
         log.info("profilePicture: \n{}\n{}", profilePicture.getOriginalFilename(), profilePicture.getSize());
-        profilePicture.transferTo(new File(profilePicture.getOriginalFilename()));
+        if(!profilePicture.isEmpty()){
+            profilePicture.transferTo(new File(profilePicture.getOriginalFilename()));
+        }
         
         if (errors.hasErrors()) {
             return "registerForm";
         } else {
-            spitterRepository.save(form.toSpitter());
-            return "redirect:/spitter/" + form.getUsername();
+            Spitter spitter = form.toSpitter();
+            spitterRepository.save(spitter);
+            model.addAttribute("username", form.getUsername());
+            model.addFlashAttribute("spitter", spitter);
+            return "redirect:/spitter/{username}";
         }
     }
 
     @RequestMapping(value = "/{username}", method = RequestMethod.GET)
     public String showProfilePage(@PathVariable String username, Model model) {
-        Spitter spitter = spitterRepository.findByUsername(username);
-        model.addAttribute("spitter", spitter);
+        
+        if(!model.containsAttribute("spitter")){
+            Spitter spitter = spitterRepository.findByUsername(username);
+            model.addAttribute("spitter", spitter);
+        }
 
         return "profile";
     }

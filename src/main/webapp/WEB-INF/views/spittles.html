@@ -25,15 +25,15 @@
                 <h1>Recent Spittles</h1>
 
                 <ul>
-                    <li th:each="spittle : ${spittleList}" th:text="${spittle}">
+                    <li th:each="spittle : ${spittleList}">
                         <div class="spittleMessage">
-                            <label th:value="${spittle.message}" />
+                            <label th:text="${spittle.message}" />
                         </div>
                         <div>
-                            <span class="spittleTime"><label th:value="${spittle.time}" /></span>
+                            <span class="spittleTime"><label th:text="${spittle.time}" /></span>
                             <span class="spittleLocation">
-                                (<label th:value="${spittle.latitude}" />,
-                                <label th:value="${spittle.longitude}" />)</span>
+                                (<label th:text="${spittle.latitude}" />,
+                                <label th:text="${spittle.longitude}" />)</span>
                         </div>
                     </li>
 
