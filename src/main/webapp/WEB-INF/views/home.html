@@ -1,11 +1,21 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" layout:decorator="layout">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" layout:decorator="layout" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <head>
         <title>Home</title>
     </head>
     <body>
         <div layout:fragment="content">
             <h1>Welcome to Spittr</h1>
+
+            <ul sec:authorize="isAnonymous()" class="nav navbar-nav navbar-right">
+                <li><a th:href="@{/login}">Login </a></li>
+                <li><a th:href="@{/register}">Sign Up</a></li>
+            </ul>
+            <ul sec:authorize="isAuthenticated()" class="nav navbar-nav navbar-right" >
+                <li>
+                    <a th:href="@{/logout}">Log out</a>
+                </li>
+            </ul>
             <a th:href="@{/spittles}">Spittles</a> |
             <a th:href="@{/spitter/register}">Register</a>
         </div>
