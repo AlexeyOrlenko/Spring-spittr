@@ -23,7 +23,7 @@ import org.thymeleaf.templateresolver.TemplateResolver;
  */
 @Configuration
 @EnableWebMvc
-@ComponentScan("spittr.web")
+@ComponentScan("spittr")
 public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Override
